@@ -13,4 +13,8 @@ describe("StringCalculator", () => {
     const calculator = new StringCalculator();
     expect(calculator.add("1,5")).toBe(6);
   });
+  test("should handle multiple comma-separated numbers", () => {
+    const calculator = new StringCalculator();
+    expect(calculator.add("1,2,3,4")).toBe(10);
+  });
 });
