@@ -17,4 +17,8 @@ describe("StringCalculator", () => {
     const calculator = new StringCalculator();
     expect(calculator.add("1,2,3,4")).toBe(10);
   });
+  test("should handle newlines between numbers", () => {
+    const calculator = new StringCalculator();
+    expect(calculator.add("1\n2,3")).toBe(6);
+  });
 });
