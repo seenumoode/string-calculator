@@ -21,6 +21,7 @@ class StringCalculator {
     // Handle single number case
     if (!delimiterRegex.test(numberString)) {
       const num = parseInt(numberString);
+      if (isNaN(num)) throw new Error("invalid input");
       if (num < 0) throw new Error(`negative numbers not allowed: ${num}`);
       return num;
     }
@@ -28,6 +29,8 @@ class StringCalculator {
     const numberArray = numberString
       .split(delimiterRegex)
       .map((num) => parseInt(num));
+    const invalidNumbers = numberArray.filter((num) => isNaN(num));
+    if (invalidNumbers.length > 0) throw new Error("invalid input");
     const negatives = numberArray.filter((num) => num < 0);
     if (negatives.length > 0) {
       throw new Error(`negative numbers not allowed: ${negatives.join(",")}`);
