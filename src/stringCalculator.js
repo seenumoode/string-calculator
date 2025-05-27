@@ -2,24 +2,25 @@ class StringCalculator {
   add(numbers) {
     if (numbers === "") return 0;
 
-    let delimiter = /,|\n/;
+    let delimiters = [",", "\n"];
     let numberString = numbers;
 
     if (numbers.startsWith("//")) {
       const parts = numbers.split("\n");
       if (parts.length < 2) throw new Error("invalid delimiter format");
       const delimiterPart = parts[0].substring(2);
-      delimiter =
-        delimiterPart.startsWith("[") && delimiterPart.endsWith("]")
-          ? delimiterPart.slice(1, -1)
-          : delimiterPart;
+      delimiters = delimiterPart
+        .match(/\[([^\]]*)\]/g)
+        ?.map((d) => d.slice(1, -1)) || [delimiterPart];
+      if (delimiters.length === 0 || delimiters.some((d) => d === "")) {
+        throw new Error("invalid delimiter format");
+      }
       numberString = parts[1];
     }
 
-    const delimiterRegex =
-      typeof delimiter === "string"
-        ? new RegExp(delimiter.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
-        : delimiter;
+    const delimiterRegex = new RegExp(
+      delimiters.map((d) => d.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")
+    );
 
     if (!delimiterRegex.test(numberString)) {
       const num = parseInt(numberString);
