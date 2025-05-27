@@ -7,7 +7,12 @@ class StringCalculator {
 
     if (numbers.startsWith("//")) {
       const parts = numbers.split("\n");
-      delimiter = parts[0].substring(2);
+      if (parts.length < 2) throw new Error("invalid delimiter format");
+      const delimiterPart = parts[0].substring(2);
+      delimiter =
+        delimiterPart.startsWith("[") && delimiterPart.endsWith("]")
+          ? delimiterPart.slice(1, -1)
+          : delimiterPart;
       numberString = parts[1];
     }
 
